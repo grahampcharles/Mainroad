@@ -1,9 +1,9 @@
 {{- if and ( $thumbnail := .page.Params.thumbnail) (not .page.Params.hideThumbnail) }}
+{{- $thumbnail_attr := .page.Params.thumbnail_attr  }}
+{{- $thumbnail_attrlink := .page.Params.thumbnail_attrlink  }}
 {{- $class := .class }}
 {{- $visibility := .page.Site.Params.thumbnail.visibility | default (slice "list"
 "post") }}
-
-
 
 {{- $valueType := printf "%T" $thumbnail -}}
 {{- $isMap := in $valueType "map" -}}
@@ -20,8 +20,11 @@
 {{- if in $visibility $class }}
 <figure class="{{ with $class }}{{ . }}__thumbnail {{ end }}thumbnail">
 	{{ if eq $class "list" }}<a class="thumbnail__link" href="{{ .page.RelPermalink }}">{{ end }}
+	{{ if and (eq $class "post") $thumbnail_attrlink }}<a class="thumbnail__link" href="{{ $thumbnail_attrlink }}">{{ end }} 
 		<img class="thumbnail__image" src="{{ $src }}" alt="{{ .page.Title }}">
-		{{ if eq $class "list" }}</a>{{ end }}
+	{{ if eq $class "list" }}</a>{{ end }}
+	{{ if and (eq $class "post") $thumbnail_attr }}<figcaption><p>{{ $thumbnail_attr }}</p></figcaption>{{ end }} 
+	{{ if and (eq $class "post") $thumbnail_attrlink }}</a>{{ end }} 
 </figure>
 {{- end }}
 {{- end }}
